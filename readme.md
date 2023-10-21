@@ -102,7 +102,7 @@ storedTeam:
 
 ps. For simplicity, we use the first player as the captain of the team.
 
-### Announce Players Performance of the Matchweek
+#### Announce Players Performance of the Matchweek
 
 ```
 fantasfived tx fantasfive announce-and-create-next-mw 1 Son-4-9-Kane-1-0-Ric-1-1-Hal-9-3 --from $alice --gas auto
@@ -154,7 +154,7 @@ storedTeam:
   rank: "1"
 ```
 
-This means that teamId 3 is the winner of the Matchweek 1 with 126 points and teamId 2 is the runner-up with 111 points.
+This means that teamId(`index`) 3 is the winner of the Matchweek 1 with 126 points and teamId 2 is the runner-up with 111 points.
 
 #### Verify current Matchweek Id again
 
@@ -173,7 +173,7 @@ Which means that the Matchweek Id is currently 2.
 
 The process can be repeated for the next Matchweek and so on.
 
-#### Events
+### Events
 
 For each actions, there will be an event emitted. For example, when Alice announces the performance of the players in the Matchweek 1, there will be an event emitted like this:
 
