@@ -9,4 +9,5 @@ import (
 // x/fantasfive module sentinel errors
 var (
 	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrOwner  = sdkerrors.Register(ModuleName, 1101, "incorrect owner")
 )

@@ -10,6 +10,6 @@ message StoredTeam {
   string captainIndex = 4; 
   string points = 5; 
   string rank = 6; 
-  
+  string owner = 7;
 }
 
