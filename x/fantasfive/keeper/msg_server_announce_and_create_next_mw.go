@@ -32,36 +32,38 @@ func (k msgServer) AnnounceAndCreateNextMw(goCtx context.Context, msg *types.Msg
 	teamIds := []uint{}
 	teamPoints := []uint{}
 
-	lastTeamId := uint(teamInfo.NextId) - 1
-	// panic(fmt.Sprintf("lastTeamId: %d", lastTeamId))
-	// go from last team to first team
-	for i := lastTeamId; true; i-- {
-		teamId := strconv.FormatUint(uint64(i), 10)
-		team, found := k.Keeper.GetStoredTeam(ctx, teamId)
-		if !found {
-			panic(fmt.Sprintf("team %d/%s not found", uint64(i), teamId))
-		}
-		teamMwId, err := rules.ParseMatchWeekId(team.MwId)
-		if err != nil {
-			panic(err)
-		}
-		if teamMwId == uint(mwInfo.NextId) {
-			//assume team is valid b/c it was validated when it was created
-			team_players, _ := rules.ParsePlayers(team.Players)
-			team_cap_index, _ := rules.ParseCaptainIndex(team.CaptainIndex)
+	// skip if there are no teams
+	if teamInfo.NextId > 0 {
+		lastTeamId := uint(teamInfo.NextId) - 1
+		// go from last team to first team
+		for i := lastTeamId; true; i-- {
+			teamId := strconv.FormatUint(uint64(i), 10)
+			team, found := k.Keeper.GetStoredTeam(ctx, teamId)
+			if !found {
+				panic(fmt.Sprintf("team %d/%s not found", uint64(i), teamId))
+			}
+			teamMwId, err := rules.ParseMatchWeekId(team.MwId)
+			if err != nil {
+				panic(err)
+			}
+			if teamMwId == uint(mwInfo.NextId) {
+				//assume team is valid b/c it was validated when it was created
+				team_players, _ := rules.ParsePlayers(team.Players)
+				team_cap_index, _ := rules.ParseCaptainIndex(team.CaptainIndex)
 
-			team_points := (playerPerf.CalculatePointByTeam(rules.Team{
-				Players:      *team_players,
-				CaptainIndex: team_cap_index,
-			}))
+				team_points := (playerPerf.CalculatePointByTeam(rules.Team{
+					Players:      *team_players,
+					CaptainIndex: team_cap_index,
+				}))
 
-			teamIds = append(teamIds, uint(i))
-			teamPoints = append(teamPoints, team_points)
-		}
+				teamIds = append(teamIds, uint(i))
+				teamPoints = append(teamPoints, team_points)
+			}
 
-		// stop when we reach the first team of the matchweek
-		if teamMwId != uint(mwInfo.NextId) || i == 0 {
-			break
+			// stop when we reach the first team of the matchweek
+			if teamMwId != uint(mwInfo.NextId) || i == 0 {
+				break
+			}
 		}
 	}
 
@@ -83,11 +85,19 @@ func (k msgServer) AnnounceAndCreateNextMw(goCtx context.Context, msg *types.Msg
 		k.Keeper.SetStoredTeam(ctx, team)
 	}
 
+	var winnerTeamId string
+	if len(teamIds) > 0 {
+		winnerTeamId = rules.StringFromUint(teamIds[0])
+	}
+
 	//emit event announcing this matchweek
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.MatchWeekAnnouncedEventType,
 			sdk.NewAttribute(types.MatchWeekAnnouncedEventAnnoucer, msg.Creator),
 			sdk.NewAttribute(types.MatchWeekAnnouncedEventMwId, rules.StringFromUint(uint(mwInfo.NextId))),
+			sdk.NewAttribute(types.MatchWeekAnnouncedEventTeamCount, rules.StringFromUint(uint(len(teamIds)))),
+			sdk.NewAttribute(types.MatchWeekAnnouncedEventWinnerTeamId, winnerTeamId),
+			sdk.NewAttribute(types.MatchWeekAnnouncedEventPlayerPref, msg.PlayerPerf),
 		),
 	)
 
