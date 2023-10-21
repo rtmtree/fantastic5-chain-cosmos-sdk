@@ -9,6 +9,15 @@
  * ---------------------------------------------------------------
  */
 
+export interface FantasfiveMsgCreateTeamResponse {
+  teamId?: string;
+}
+
+export interface FantasfiveMwInfo {
+  /** @format uint64 */
+  nextId?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
@@ -59,6 +68,10 @@ export interface FantasfiveQueryAllSystemInfoResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface FantasfiveQueryGetMwInfoResponse {
+  MwInfo?: FantasfiveMwInfo;
+}
+
 export interface FantasfiveQueryGetStoredMWResponse {
   storedMW?: FantasfiveStoredMW;
 }
@@ -69,6 +82,10 @@ export interface FantasfiveQueryGetStoredTeamResponse {
 
 export interface FantasfiveQueryGetSystemInfoResponse {
   systemInfo?: FantasfiveSystemInfo;
+}
+
+export interface FantasfiveQueryGetTeamInfoResponse {
+  TeamInfo?: FantasfiveTeamInfo;
 }
 
 /**
@@ -91,6 +108,7 @@ export interface FantasfiveStoredTeam {
   captainIndex?: string;
   points?: string;
   rank?: string;
+  owner?: string;
 }
 
 export interface FantasfiveSystemInfo {
@@ -101,6 +119,11 @@ export interface FantasfiveSystemInfo {
 
   /** @format uint64 */
   nextMWId?: string;
+}
+
+export interface FantasfiveTeamInfo {
+  /** @format uint64 */
+  nextId?: string;
 }
 
 export interface ProtobufAny {
@@ -377,6 +400,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryMwInfo
+   * @summary Queries a MwInfo by index.
+   * @request GET:/fantasfive/fantasfive/mw_info
+   */
+  queryMwInfo = (params: RequestParams = {}) =>
+    this.request<FantasfiveQueryGetMwInfoResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/mw_info`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryParams
    * @summary Parameters queries the parameters of the module.
    * @request GET:/fantasfive/fantasfive/params
@@ -510,6 +549,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   querySystemInfo = (index: string, params: RequestParams = {}) =>
     this.request<FantasfiveQueryGetSystemInfoResponse, RpcStatus>({
       path: `/fantasfive/fantasfive/system_info/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryTeamInfo
+   * @summary Queries a TeamInfo by index.
+   * @request GET:/fantasfive/fantasfive/team_info
+   */
+  queryTeamInfo = (params: RequestParams = {}) =>
+    this.request<FantasfiveQueryGetTeamInfoResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/team_info`,
       method: "GET",
       format: "json",
       ...params,

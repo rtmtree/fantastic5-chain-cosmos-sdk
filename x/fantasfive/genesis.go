@@ -22,6 +22,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.StoredTeamList {
 		k.SetStoredTeam(ctx, elem)
 	}
+	// Set if defined
+	if genState.MwInfo != nil {
+		k.SetMwInfo(ctx, *genState.MwInfo)
+	}
+	// Set if defined
+	if genState.TeamInfo != nil {
+		k.SetTeamInfo(ctx, *genState.TeamInfo)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -34,6 +42,16 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.SystemInfoList = k.GetAllSystemInfo(ctx)
 	genesis.StoredMWList = k.GetAllStoredMW(ctx)
 	genesis.StoredTeamList = k.GetAllStoredTeam(ctx)
+	// Get all mwInfo
+	mwInfo, found := k.GetMwInfo(ctx)
+	if found {
+		genesis.MwInfo = &mwInfo
+	}
+	// Get all teamInfo
+	teamInfo, found := k.GetTeamInfo(ctx)
+	if found {
+		genesis.TeamInfo = &teamInfo
+	}
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

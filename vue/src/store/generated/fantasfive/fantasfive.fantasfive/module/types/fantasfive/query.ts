@@ -8,6 +8,8 @@ import {
 } from "../cosmos/base/query/v1beta1/pagination";
 import { StoredMW } from "../fantasfive/stored_mw";
 import { StoredTeam } from "../fantasfive/stored_team";
+import { MwInfo } from "../fantasfive/mw_info";
+import { TeamInfo } from "../fantasfive/team_info";
 
 export const protobufPackage = "fantasfive.fantasfive";
 
@@ -69,6 +71,18 @@ export interface QueryAllStoredTeamRequest {
 export interface QueryAllStoredTeamResponse {
   storedTeam: StoredTeam[];
   pagination: PageResponse | undefined;
+}
+
+export interface QueryGetMwInfoRequest {}
+
+export interface QueryGetMwInfoResponse {
+  MwInfo: MwInfo | undefined;
+}
+
+export interface QueryGetTeamInfoRequest {}
+
+export interface QueryGetTeamInfoResponse {
+  TeamInfo: TeamInfo | undefined;
 }
 
 const baseQueryParamsRequest: object = {};
@@ -1104,6 +1118,223 @@ export const QueryAllStoredTeamResponse = {
   },
 };
 
+const baseQueryGetMwInfoRequest: object = {};
+
+export const QueryGetMwInfoRequest = {
+  encode(_: QueryGetMwInfoRequest, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetMwInfoRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetMwInfoRequest } as QueryGetMwInfoRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetMwInfoRequest {
+    const message = { ...baseQueryGetMwInfoRequest } as QueryGetMwInfoRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetMwInfoRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<QueryGetMwInfoRequest>): QueryGetMwInfoRequest {
+    const message = { ...baseQueryGetMwInfoRequest } as QueryGetMwInfoRequest;
+    return message;
+  },
+};
+
+const baseQueryGetMwInfoResponse: object = {};
+
+export const QueryGetMwInfoResponse = {
+  encode(
+    message: QueryGetMwInfoResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.MwInfo !== undefined) {
+      MwInfo.encode(message.MwInfo, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetMwInfoResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetMwInfoResponse } as QueryGetMwInfoResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.MwInfo = MwInfo.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetMwInfoResponse {
+    const message = { ...baseQueryGetMwInfoResponse } as QueryGetMwInfoResponse;
+    if (object.MwInfo !== undefined && object.MwInfo !== null) {
+      message.MwInfo = MwInfo.fromJSON(object.MwInfo);
+    } else {
+      message.MwInfo = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetMwInfoResponse): unknown {
+    const obj: any = {};
+    message.MwInfo !== undefined &&
+      (obj.MwInfo = message.MwInfo ? MwInfo.toJSON(message.MwInfo) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetMwInfoResponse>
+  ): QueryGetMwInfoResponse {
+    const message = { ...baseQueryGetMwInfoResponse } as QueryGetMwInfoResponse;
+    if (object.MwInfo !== undefined && object.MwInfo !== null) {
+      message.MwInfo = MwInfo.fromPartial(object.MwInfo);
+    } else {
+      message.MwInfo = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetTeamInfoRequest: object = {};
+
+export const QueryGetTeamInfoRequest = {
+  encode(_: QueryGetTeamInfoRequest, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetTeamInfoRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTeamInfoRequest,
+    } as QueryGetTeamInfoRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGetTeamInfoRequest {
+    const message = {
+      ...baseQueryGetTeamInfoRequest,
+    } as QueryGetTeamInfoRequest;
+    return message;
+  },
+
+  toJSON(_: QueryGetTeamInfoRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryGetTeamInfoRequest>
+  ): QueryGetTeamInfoRequest {
+    const message = {
+      ...baseQueryGetTeamInfoRequest,
+    } as QueryGetTeamInfoRequest;
+    return message;
+  },
+};
+
+const baseQueryGetTeamInfoResponse: object = {};
+
+export const QueryGetTeamInfoResponse = {
+  encode(
+    message: QueryGetTeamInfoResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.TeamInfo !== undefined) {
+      TeamInfo.encode(message.TeamInfo, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetTeamInfoResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetTeamInfoResponse,
+    } as QueryGetTeamInfoResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.TeamInfo = TeamInfo.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetTeamInfoResponse {
+    const message = {
+      ...baseQueryGetTeamInfoResponse,
+    } as QueryGetTeamInfoResponse;
+    if (object.TeamInfo !== undefined && object.TeamInfo !== null) {
+      message.TeamInfo = TeamInfo.fromJSON(object.TeamInfo);
+    } else {
+      message.TeamInfo = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetTeamInfoResponse): unknown {
+    const obj: any = {};
+    message.TeamInfo !== undefined &&
+      (obj.TeamInfo = message.TeamInfo
+        ? TeamInfo.toJSON(message.TeamInfo)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetTeamInfoResponse>
+  ): QueryGetTeamInfoResponse {
+    const message = {
+      ...baseQueryGetTeamInfoResponse,
+    } as QueryGetTeamInfoResponse;
+    if (object.TeamInfo !== undefined && object.TeamInfo !== null) {
+      message.TeamInfo = TeamInfo.fromPartial(object.TeamInfo);
+    } else {
+      message.TeamInfo = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1130,6 +1361,10 @@ export interface Query {
   StoredTeamAll(
     request: QueryAllStoredTeamRequest
   ): Promise<QueryAllStoredTeamResponse>;
+  /** Queries a MwInfo by index. */
+  MwInfo(request: QueryGetMwInfoRequest): Promise<QueryGetMwInfoResponse>;
+  /** Queries a TeamInfo by index. */
+  TeamInfo(request: QueryGetTeamInfoRequest): Promise<QueryGetTeamInfoResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1228,6 +1463,32 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllStoredTeamResponse.decode(new Reader(data))
+    );
+  }
+
+  MwInfo(request: QueryGetMwInfoRequest): Promise<QueryGetMwInfoResponse> {
+    const data = QueryGetMwInfoRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "fantasfive.fantasfive.Query",
+      "MwInfo",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetMwInfoResponse.decode(new Reader(data))
+    );
+  }
+
+  TeamInfo(
+    request: QueryGetTeamInfoRequest
+  ): Promise<QueryGetTeamInfoResponse> {
+    const data = QueryGetTeamInfoRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "fantasfive.fantasfive.Query",
+      "TeamInfo",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetTeamInfoResponse.decode(new Reader(data))
     );
   }
 }

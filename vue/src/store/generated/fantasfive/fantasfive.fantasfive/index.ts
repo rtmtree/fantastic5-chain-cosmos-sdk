@@ -1,12 +1,14 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { MwInfo } from "./module/types/fantasfive/mw_info"
 import { Params } from "./module/types/fantasfive/params"
 import { StoredMW } from "./module/types/fantasfive/stored_mw"
 import { StoredTeam } from "./module/types/fantasfive/stored_team"
 import { SystemInfo } from "./module/types/fantasfive/system_info"
+import { TeamInfo } from "./module/types/fantasfive/team_info"
 
 
-export { Params, StoredMW, StoredTeam, SystemInfo };
+export { MwInfo, Params, StoredMW, StoredTeam, SystemInfo, TeamInfo };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -51,12 +53,16 @@ const getDefaultState = () => {
 				StoredMWAll: {},
 				StoredTeam: {},
 				StoredTeamAll: {},
+				MwInfo: {},
+				TeamInfo: {},
 				
 				_Structure: {
+						MwInfo: getStructure(MwInfo.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						StoredMW: getStructure(StoredMW.fromPartial({})),
 						StoredTeam: getStructure(StoredTeam.fromPartial({})),
 						SystemInfo: getStructure(SystemInfo.fromPartial({})),
+						TeamInfo: getStructure(TeamInfo.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -126,6 +132,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.StoredTeamAll[JSON.stringify(params)] ?? {}
+		},
+				getMwInfo: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.MwInfo[JSON.stringify(params)] ?? {}
+		},
+				getTeamInfo: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.TeamInfo[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -328,6 +346,78 @@ export default {
 		
 		
 		
+		
+		 		
+		
+		
+		async QueryMwInfo({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryMwInfo()).data
+				
+					
+				commit('QUERY', { query: 'MwInfo', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryMwInfo', payload: { options: { all }, params: {...key},query }})
+				return getters['getMwInfo']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryMwInfo API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryTeamInfo({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryTeamInfo()).data
+				
+					
+				commit('QUERY', { query: 'TeamInfo', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryTeamInfo', payload: { options: { all }, params: {...key},query }})
+				return getters['getTeamInfo']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryTeamInfo API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		async sendMsgCreateTeam({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateTeam(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateTeam:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateTeam:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		
+		async MsgCreateTeam({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateTeam(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateTeam:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateTeam:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		
 	}
 }

@@ -19,7 +19,7 @@ import (
 var _ = strconv.IntSize
 
 func TestStoredTeamQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNStoredTeam(keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -70,7 +70,7 @@ func TestStoredTeamQuerySingle(t *testing.T) {
 }
 
 func TestStoredTeamQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNStoredTeam(keeper, ctx, 5)
 

@@ -3,6 +3,8 @@ import { Params } from "../fantasfive/params";
 import { SystemInfo } from "../fantasfive/system_info";
 import { StoredMW } from "../fantasfive/stored_mw";
 import { StoredTeam } from "../fantasfive/stored_team";
+import { MwInfo } from "../fantasfive/mw_info";
+import { TeamInfo } from "../fantasfive/team_info";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "fantasfive.fantasfive";
@@ -12,8 +14,10 @@ export interface GenesisState {
   params: Params | undefined;
   systemInfoList: SystemInfo[];
   storedMWList: StoredMW[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   storedTeamList: StoredTeam[];
+  mwInfo: MwInfo | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  teamInfo: TeamInfo | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -31,6 +35,12 @@ export const GenesisState = {
     }
     for (const v of message.storedTeamList) {
       StoredTeam.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.mwInfo !== undefined) {
+      MwInfo.encode(message.mwInfo, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.teamInfo !== undefined) {
+      TeamInfo.encode(message.teamInfo, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -60,6 +70,12 @@ export const GenesisState = {
           message.storedTeamList.push(
             StoredTeam.decode(reader, reader.uint32())
           );
+          break;
+        case 5:
+          message.mwInfo = MwInfo.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.teamInfo = TeamInfo.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -94,6 +110,16 @@ export const GenesisState = {
         message.storedTeamList.push(StoredTeam.fromJSON(e));
       }
     }
+    if (object.mwInfo !== undefined && object.mwInfo !== null) {
+      message.mwInfo = MwInfo.fromJSON(object.mwInfo);
+    } else {
+      message.mwInfo = undefined;
+    }
+    if (object.teamInfo !== undefined && object.teamInfo !== null) {
+      message.teamInfo = TeamInfo.fromJSON(object.teamInfo);
+    } else {
+      message.teamInfo = undefined;
+    }
     return message;
   },
 
@@ -122,6 +148,12 @@ export const GenesisState = {
     } else {
       obj.storedTeamList = [];
     }
+    message.mwInfo !== undefined &&
+      (obj.mwInfo = message.mwInfo ? MwInfo.toJSON(message.mwInfo) : undefined);
+    message.teamInfo !== undefined &&
+      (obj.teamInfo = message.teamInfo
+        ? TeamInfo.toJSON(message.teamInfo)
+        : undefined);
     return obj;
   },
 
@@ -149,6 +181,16 @@ export const GenesisState = {
       for (const e of object.storedTeamList) {
         message.storedTeamList.push(StoredTeam.fromPartial(e));
       }
+    }
+    if (object.mwInfo !== undefined && object.mwInfo !== null) {
+      message.mwInfo = MwInfo.fromPartial(object.mwInfo);
+    } else {
+      message.mwInfo = undefined;
+    }
+    if (object.teamInfo !== undefined && object.teamInfo !== null) {
+      message.teamInfo = TeamInfo.fromPartial(object.teamInfo);
+    } else {
+      message.teamInfo = undefined;
     }
     return message;
   },

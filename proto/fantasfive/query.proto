@@ -8,6 +8,8 @@ import "fantasfive/params.proto";
 import "fantasfive/system_info.proto";
 import "fantasfive/stored_mw.proto";
 import "fantasfive/stored_team.proto";
+import "fantasfive/mw_info.proto";
+import "fantasfive/team_info.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "fantasfive/x/fantasfive/types";
@@ -48,6 +50,14 @@ service Query {
 		option (google.api.http).get = "/fantasfive/fantasfive/stored_team";
 	}
 
+// Queries a MwInfo by index.
+	rpc MwInfo(QueryGetMwInfoRequest) returns (QueryGetMwInfoResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/mw_info";
+	}
+// Queries a TeamInfo by index.
+	rpc TeamInfo(QueryGetTeamInfoRequest) returns (QueryGetTeamInfoResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/team_info";
+	}
 // this line is used by starport scaffolding # 2
 }
 
@@ -114,4 +124,14 @@ message QueryAllStoredTeamResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
+message QueryGetMwInfoRequest {}
+
+message QueryGetMwInfoResponse {
+	MwInfo MwInfo = 1 [(gogoproto.nullable) = false];
+}
+message QueryGetTeamInfoRequest {}
+
+message QueryGetTeamInfoResponse {
+	TeamInfo TeamInfo = 1 [(gogoproto.nullable) = false];
+}
 // this line is used by starport scaffolding # 3

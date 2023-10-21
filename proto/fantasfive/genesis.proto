@@ -6,6 +6,8 @@ import "fantasfive/params.proto";
 import "fantasfive/system_info.proto";
 import "fantasfive/stored_mw.proto";
 import "fantasfive/stored_team.proto";
+import "fantasfive/mw_info.proto";
+import "fantasfive/team_info.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "fantasfive/x/fantasfive/types";
@@ -16,5 +18,7 @@ message GenesisState {
   repeated SystemInfo systemInfoList = 2 [(gogoproto.nullable) = false];
   repeated StoredMW storedMWList = 3 [(gogoproto.nullable) = false];
   repeated StoredTeam storedTeamList = 4 [(gogoproto.nullable) = false];
+  MwInfo mwInfo = 5;
+  TeamInfo teamInfo = 6;
   // this line is used by starport scaffolding # genesis/proto/state
 }

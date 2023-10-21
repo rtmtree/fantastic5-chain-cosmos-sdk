@@ -8,6 +8,7 @@ import (
 	"fantasfive/testutil/nullify"
 	"fantasfive/x/fantasfive/keeper"
 	"fantasfive/x/fantasfive/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +27,7 @@ func createNStoredTeam(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.St
 }
 
 func TestStoredTeamGet(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	items := createNStoredTeam(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetStoredTeam(ctx,
@@ -40,7 +41,7 @@ func TestStoredTeamGet(t *testing.T) {
 	}
 }
 func TestStoredTeamRemove(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	items := createNStoredTeam(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveStoredTeam(ctx,
@@ -54,7 +55,7 @@ func TestStoredTeamRemove(t *testing.T) {
 }
 
 func TestStoredTeamGetAll(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	items := createNStoredTeam(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),

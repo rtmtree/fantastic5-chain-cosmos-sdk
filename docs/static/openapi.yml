@@ -18782,6 +18782,42 @@ paths:
           format: int64
       tags:
         - Query
+  /fantasfive/fantasfive/mw_info:
+    get:
+      summary: Queries a MwInfo by index.
+      operationId: FantasfiveFantasfiveMwInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              MwInfo:
+                type: object
+                properties:
+                  nextId:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /fantasfive/fantasfive/params:
     get:
       summary: Parameters queries the parameters of the module.
@@ -19010,6 +19046,8 @@ paths:
                       type: string
                     rank:
                       type: string
+                    owner:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -19138,6 +19176,8 @@ paths:
                   points:
                     type: string
                   rank:
+                    type: string
+                  owner:
                     type: string
         default:
           description: An unexpected error response.
@@ -19335,6 +19375,42 @@ paths:
           in: path
           required: true
           type: string
+      tags:
+        - Query
+  /fantasfive/fantasfive/team_info:
+    get:
+      summary: Queries a TeamInfo by index.
+      operationId: FantasfiveFantasfiveTeamInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              TeamInfo:
+                type: object
+                properties:
+                  nextId:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
       tags:
         - Query
   /ibc/apps/interchain_accounts/controller/v1/params:
@@ -45211,6 +45287,17 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
+  fantasfive.fantasfive.MsgCreateTeamResponse:
+    type: object
+    properties:
+      teamId:
+        type: string
+  fantasfive.fantasfive.MwInfo:
+    type: object
+    properties:
+      nextId:
+        type: string
+        format: uint64
   fantasfive.fantasfive.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -45270,6 +45357,8 @@ definitions:
             points:
               type: string
             rank:
+              type: string
+            owner:
               type: string
       pagination:
         type: object
@@ -45337,6 +45426,15 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
+  fantasfive.fantasfive.QueryGetMwInfoResponse:
+    type: object
+    properties:
+      MwInfo:
+        type: object
+        properties:
+          nextId:
+            type: string
+            format: uint64
   fantasfive.fantasfive.QueryGetStoredMWResponse:
     type: object
     properties:
@@ -45365,6 +45463,8 @@ definitions:
             type: string
           rank:
             type: string
+          owner:
+            type: string
   fantasfive.fantasfive.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -45377,6 +45477,15 @@ definitions:
             type: string
             format: uint64
           nextMWId:
+            type: string
+            format: uint64
+  fantasfive.fantasfive.QueryGetTeamInfoResponse:
+    type: object
+    properties:
+      TeamInfo:
+        type: object
+        properties:
+          nextId:
             type: string
             format: uint64
   fantasfive.fantasfive.QueryParamsResponse:
@@ -45408,6 +45517,8 @@ definitions:
         type: string
       rank:
         type: string
+      owner:
+        type: string
   fantasfive.fantasfive.SystemInfo:
     type: object
     properties:
@@ -45417,6 +45528,12 @@ definitions:
         type: string
         format: uint64
       nextMWId:
+        type: string
+        format: uint64
+  fantasfive.fantasfive.TeamInfo:
+    type: object
+    properties:
+      nextId:
         type: string
         format: uint64
   ibc.applications.interchain_accounts.controller.v1.Params:

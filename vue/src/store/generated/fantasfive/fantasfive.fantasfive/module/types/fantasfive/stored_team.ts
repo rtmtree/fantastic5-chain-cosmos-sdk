@@ -10,6 +10,7 @@ export interface StoredTeam {
   captainIndex: string;
   points: string;
   rank: string;
+  owner: string;
 }
 
 const baseStoredTeam: object = {
@@ -19,6 +20,7 @@ const baseStoredTeam: object = {
   captainIndex: "",
   points: "",
   rank: "",
+  owner: "",
 };
 
 export const StoredTeam = {
@@ -40,6 +42,9 @@ export const StoredTeam = {
     }
     if (message.rank !== "") {
       writer.uint32(50).string(message.rank);
+    }
+    if (message.owner !== "") {
+      writer.uint32(58).string(message.owner);
     }
     return writer;
   },
@@ -68,6 +73,9 @@ export const StoredTeam = {
           break;
         case 6:
           message.rank = reader.string();
+          break;
+        case 7:
+          message.owner = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -109,6 +117,11 @@ export const StoredTeam = {
     } else {
       message.rank = "";
     }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
+    }
     return message;
   },
 
@@ -121,6 +134,7 @@ export const StoredTeam = {
       (obj.captainIndex = message.captainIndex);
     message.points !== undefined && (obj.points = message.points);
     message.rank !== undefined && (obj.rank = message.rank);
+    message.owner !== undefined && (obj.owner = message.owner);
     return obj;
   },
 
@@ -155,6 +169,11 @@ export const StoredTeam = {
       message.rank = object.rank;
     } else {
       message.rank = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
     }
     return message;
   },

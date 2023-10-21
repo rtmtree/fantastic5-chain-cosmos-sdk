@@ -8,6 +8,7 @@ import (
 	"fantasfive/testutil/nullify"
 	"fantasfive/x/fantasfive/keeper"
 	"fantasfive/x/fantasfive/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )
@@ -26,7 +27,7 @@ func createNSystemInfo(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Sy
 }
 
 func TestSystemInfoGet(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	items := createNSystemInfo(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetSystemInfo(ctx,
@@ -40,7 +41,7 @@ func TestSystemInfoGet(t *testing.T) {
 	}
 }
 func TestSystemInfoRemove(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	items := createNSystemInfo(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveSystemInfo(ctx,
@@ -54,7 +55,7 @@ func TestSystemInfoRemove(t *testing.T) {
 }
 
 func TestSystemInfoGetAll(t *testing.T) {
-	keeper, ctx := keepertest.FantasfiveKeeper(t)
+	keeper, ctx := keepertest.FantasFiveKeeper(t)
 	items := createNSystemInfo(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
