@@ -99,6 +99,7 @@ storedTeam:
   rank: "0"
 ```
 `-1` Points and `0` Rank mean that the matchweek has not announced the performance of the players yet.
+
 ps. For simplicity, we use the first player as the captain of the team.
 
 ### Announce Players Performance of the Matchweek
