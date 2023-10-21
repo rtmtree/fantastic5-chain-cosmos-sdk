@@ -1,0 +1,12 @@
+syntax = "proto3";
+package fantasfive.fantasfive;
+
+option go_package = "fantasfive/x/fantasfive/types";
+
+message SystemInfo {
+  string index = 1; 
+  uint64 nextTeamId = 2; 
+  uint64 nextMWId = 3; 
+  
+}
+

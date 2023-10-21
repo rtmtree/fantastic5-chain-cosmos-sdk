@@ -1,0 +1,15 @@
+syntax = "proto3";
+package fantasfive.fantasfive;
+
+option go_package = "fantasfive/x/fantasfive/types";
+
+message StoredTeam {
+  string index = 1; 
+  string mwId = 2; 
+  string players = 3; 
+  string captainIndex = 4; 
+  string points = 5; 
+  string rank = 6; 
+  
+}
+

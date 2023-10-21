@@ -18818,6 +18818,525 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /fantasfive/fantasfive/stored_mw:
+    get:
+      summary: Queries a list of StoredMW items.
+      operationId: FantasfiveFantasfiveStoredMWAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedMW:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    playerPerf:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/fantasfive/fantasfive/stored_mw/{index}':
+    get:
+      summary: Queries a StoredMW by index.
+      operationId: FantasfiveFantasfiveStoredMW
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedMW:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  playerPerf:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /fantasfive/fantasfive/stored_team:
+    get:
+      summary: Queries a list of StoredTeam items.
+      operationId: FantasfiveFantasfiveStoredTeamAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTeam:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    mwId:
+                      type: string
+                    players:
+                      type: string
+                    captainIndex:
+                      type: string
+                    points:
+                      type: string
+                    rank:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/fantasfive/fantasfive/stored_team/{index}':
+    get:
+      summary: Queries a StoredTeam by index.
+      operationId: FantasfiveFantasfiveStoredTeam
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              storedTeam:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  mwId:
+                    type: string
+                  players:
+                    type: string
+                  captainIndex:
+                    type: string
+                  points:
+                    type: string
+                  rank:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /fantasfive/fantasfive/system_info:
+    get:
+      summary: Queries a list of SystemInfo items.
+      operationId: FantasfiveFantasfiveSystemInfoAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              systemInfo:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    nextTeamId:
+                      type: string
+                      format: uint64
+                    nextMWId:
+                      type: string
+                      format: uint64
+              pagination:
+                type: object
+                properties:
+                  next_key:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.count_total
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/fantasfive/fantasfive/system_info/{index}':
+    get:
+      summary: Queries a SystemInfo by index.
+      operationId: FantasfiveFantasfiveSystemInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              systemInfo:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  nextTeamId:
+                    type: string
+                    format: uint64
+                  nextMWId:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /ibc/apps/interchain_accounts/controller/v1/params:
     get:
       summary: Params queries all parameters of the ICA controller submodule.
@@ -44695,6 +45214,171 @@ definitions:
   fantasfive.fantasfive.Params:
     type: object
     description: Params defines the parameters for the module.
+  fantasfive.fantasfive.QueryAllStoredMWResponse:
+    type: object
+    properties:
+      storedMW:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            playerPerf:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  fantasfive.fantasfive.QueryAllStoredTeamResponse:
+    type: object
+    properties:
+      storedTeam:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            mwId:
+              type: string
+            players:
+              type: string
+            captainIndex:
+              type: string
+            points:
+              type: string
+            rank:
+              type: string
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  fantasfive.fantasfive.QueryAllSystemInfoResponse:
+    type: object
+    properties:
+      systemInfo:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            nextTeamId:
+              type: string
+              format: uint64
+            nextMWId:
+              type: string
+              format: uint64
+      pagination:
+        type: object
+        properties:
+          next_key:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  fantasfive.fantasfive.QueryGetStoredMWResponse:
+    type: object
+    properties:
+      storedMW:
+        type: object
+        properties:
+          index:
+            type: string
+          playerPerf:
+            type: string
+  fantasfive.fantasfive.QueryGetStoredTeamResponse:
+    type: object
+    properties:
+      storedTeam:
+        type: object
+        properties:
+          index:
+            type: string
+          mwId:
+            type: string
+          players:
+            type: string
+          captainIndex:
+            type: string
+          points:
+            type: string
+          rank:
+            type: string
+  fantasfive.fantasfive.QueryGetSystemInfoResponse:
+    type: object
+    properties:
+      systemInfo:
+        type: object
+        properties:
+          index:
+            type: string
+          nextTeamId:
+            type: string
+            format: uint64
+          nextMWId:
+            type: string
+            format: uint64
   fantasfive.fantasfive.QueryParamsResponse:
     type: object
     properties:
@@ -44702,6 +45386,39 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  fantasfive.fantasfive.StoredMW:
+    type: object
+    properties:
+      index:
+        type: string
+      playerPerf:
+        type: string
+  fantasfive.fantasfive.StoredTeam:
+    type: object
+    properties:
+      index:
+        type: string
+      mwId:
+        type: string
+      players:
+        type: string
+      captainIndex:
+        type: string
+      points:
+        type: string
+      rank:
+        type: string
+  fantasfive.fantasfive.SystemInfo:
+    type: object
+    properties:
+      index:
+        type: string
+      nextTeamId:
+        type: string
+        format: uint64
+      nextMWId:
+        type: string
+        format: uint64
   ibc.applications.interchain_accounts.controller.v1.Params:
     type: object
     properties:

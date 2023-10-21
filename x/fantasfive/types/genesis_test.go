@@ -20,12 +20,78 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc:     "valid genesis state",
+			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
+				SystemInfoList: []types.SystemInfo{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				StoredMWList: []types.StoredMW{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				StoredTeamList: []types.StoredTeam{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated systemInfo",
+			genState: &types.GenesisState{
+				SystemInfoList: []types.SystemInfo{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated storedMW",
+			genState: &types.GenesisState{
+				StoredMWList: []types.StoredMW{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated storedTeam",
+			genState: &types.GenesisState{
+				StoredTeamList: []types.StoredTeam{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

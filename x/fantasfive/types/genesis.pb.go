@@ -25,7 +25,10 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the fantasfive module's genesis state.
 type GenesisState struct {
-	Params Params `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	Params         Params       `protobuf:"bytes,1,opt,name=params,proto3" json:"params"`
+	SystemInfoList []SystemInfo `protobuf:"bytes,2,rep,name=systemInfoList,proto3" json:"systemInfoList"`
+	StoredMWList   []StoredMW   `protobuf:"bytes,3,rep,name=storedMWList,proto3" json:"storedMWList"`
+	StoredTeamList []StoredTeam `protobuf:"bytes,4,rep,name=storedTeamList,proto3" json:"storedTeamList"`
 }
 
 func (m *GenesisState) Reset()         { *m = GenesisState{} }
@@ -68,6 +71,27 @@ func (m *GenesisState) GetParams() Params {
 	return Params{}
 }
 
+func (m *GenesisState) GetSystemInfoList() []SystemInfo {
+	if m != nil {
+		return m.SystemInfoList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetStoredMWList() []StoredMW {
+	if m != nil {
+		return m.StoredMWList
+	}
+	return nil
+}
+
+func (m *GenesisState) GetStoredTeamList() []StoredTeam {
+	if m != nil {
+		return m.StoredTeamList
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*GenesisState)(nil), "fantasfive.fantasfive.GenesisState")
 }
@@ -75,18 +99,25 @@ func init() {
 func init() { proto.RegisterFile("fantasfive/genesis.proto", fileDescriptor_5158d8bf012844a9) }
 
 var fileDescriptor_5158d8bf012844a9 = []byte{
-	// 169 bytes of a gzipped FileDescriptorProto
+	// 283 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x48, 0x4b, 0xcc, 0x2b,
 	0x49, 0x2c, 0x4e, 0xcb, 0x2c, 0x4b, 0xd5, 0x4f, 0x4f, 0xcd, 0x4b, 0x2d, 0xce, 0x2c, 0xd6, 0x2b,
 	0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0x45, 0xc8, 0xe8, 0x21, 0x98, 0x52, 0x22, 0xe9, 0xf9, 0xe9,
 	0xf9, 0x60, 0x15, 0xfa, 0x20, 0x16, 0x44, 0xb1, 0x94, 0x38, 0x92, 0x31, 0x05, 0x89, 0x45, 0x89,
-	0xb9, 0x50, 0x53, 0x94, 0xbc, 0xb9, 0x78, 0xdc, 0x21, 0xc6, 0x06, 0x97, 0x24, 0x96, 0xa4, 0x0a,
-	0x59, 0x73, 0xb1, 0x41, 0xe4, 0x25, 0x18, 0x15, 0x18, 0x35, 0xb8, 0x8d, 0x64, 0xf5, 0xb0, 0x5a,
-	0xa3, 0x17, 0x00, 0x56, 0xe4, 0xc4, 0x72, 0xe2, 0x9e, 0x3c, 0x43, 0x10, 0x54, 0x8b, 0x93, 0xf9,
-	0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c,
-	0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0xc9, 0x22, 0xd9, 0x5f, 0xa1, 0x8f,
-	0xc4, 0x29, 0xa9, 0x2c, 0x48, 0x2d, 0x4e, 0x62, 0x03, 0x3b, 0xc6, 0x18, 0x10, 0x00, 0x00, 0xff,
-	0xff, 0xb3, 0x5d, 0xcb, 0x53, 0xee, 0x00, 0x00, 0x00,
+	0xb9, 0x50, 0x53, 0xa4, 0x64, 0x90, 0x24, 0x8a, 0x2b, 0x8b, 0x4b, 0x52, 0x73, 0xe3, 0x33, 0xf3,
+	0xd2, 0x60, 0xda, 0xa4, 0x90, 0x65, 0x4b, 0xf2, 0x8b, 0x52, 0x53, 0xe2, 0x73, 0xcb, 0xb1, 0xe9,
+	0x84, 0xc8, 0x95, 0xa4, 0x26, 0xe6, 0x42, 0x64, 0x95, 0x76, 0x30, 0x71, 0xf1, 0xb8, 0x43, 0xdc,
+	0x1b, 0x5c, 0x92, 0x58, 0x92, 0x2a, 0x64, 0xcd, 0xc5, 0x06, 0xb1, 0x58, 0x82, 0x51, 0x81, 0x51,
+	0x83, 0xdb, 0x48, 0x56, 0x0f, 0xab, 0xfb, 0xf5, 0x02, 0xc0, 0x8a, 0x9c, 0x58, 0x4e, 0xdc, 0x93,
+	0x67, 0x08, 0x82, 0x6a, 0x11, 0xf2, 0xe7, 0xe2, 0x83, 0x38, 0xce, 0x33, 0x2f, 0x2d, 0xdf, 0x27,
+	0xb3, 0xb8, 0x44, 0x82, 0x49, 0x81, 0x59, 0x83, 0xdb, 0x48, 0x11, 0x87, 0x21, 0xc1, 0x70, 0xc5,
+	0x50, 0x83, 0xd0, 0xb4, 0x0b, 0x79, 0x72, 0xf1, 0x40, 0xdc, 0xec, 0x1b, 0x0e, 0x36, 0x8e, 0x19,
+	0x6c, 0x9c, 0x3c, 0x2e, 0xe3, 0xa0, 0x4a, 0xa1, 0x86, 0xa1, 0x68, 0x05, 0xbb, 0x0d, 0xcc, 0x0f,
+	0x49, 0x4d, 0xcc, 0x05, 0x1b, 0xc6, 0x82, 0xdf, 0x6d, 0x70, 0xc5, 0x70, 0xb7, 0xa1, 0x68, 0x77,
+	0x32, 0x3f, 0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c,
+	0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0x59, 0xa4, 0x20, 0xaf,
+	0xd0, 0x47, 0xe2, 0x94, 0x54, 0x16, 0xa4, 0x16, 0x27, 0xb1, 0x81, 0x83, 0xde, 0x18, 0x10, 0x00,
+	0x00, 0xff, 0xff, 0x53, 0x1c, 0x32, 0x1b, 0x34, 0x02, 0x00, 0x00,
 }
 
 func (m *GenesisState) Marshal() (dAtA []byte, err error) {
@@ -109,6 +140,48 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.StoredTeamList) > 0 {
+		for iNdEx := len(m.StoredTeamList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.StoredTeamList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x22
+		}
+	}
+	if len(m.StoredMWList) > 0 {
+		for iNdEx := len(m.StoredMWList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.StoredMWList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x1a
+		}
+	}
+	if len(m.SystemInfoList) > 0 {
+		for iNdEx := len(m.SystemInfoList) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.SystemInfoList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintGenesis(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0x12
+		}
+	}
 	{
 		size, err := m.Params.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
@@ -141,6 +214,24 @@ func (m *GenesisState) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovGenesis(uint64(l))
+	if len(m.SystemInfoList) > 0 {
+		for _, e := range m.SystemInfoList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.StoredMWList) > 0 {
+		for _, e := range m.StoredMWList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
+	if len(m.StoredTeamList) > 0 {
+		for _, e := range m.StoredTeamList {
+			l = e.Size()
+			n += 1 + l + sovGenesis(uint64(l))
+		}
+	}
 	return n
 }
 
@@ -209,6 +300,108 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field SystemInfoList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.SystemInfoList = append(m.SystemInfoList, SystemInfo{})
+			if err := m.SystemInfoList[len(m.SystemInfoList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StoredMWList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StoredMWList = append(m.StoredMWList, StoredMW{})
+			if err := m.StoredMWList[len(m.StoredMWList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StoredTeamList", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenesis
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthGenesis
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StoredTeamList = append(m.StoredTeamList, StoredTeam{})
+			if err := m.StoredTeamList[len(m.StoredTeamList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

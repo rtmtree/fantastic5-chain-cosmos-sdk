@@ -3,6 +3,9 @@ package fantasfive.fantasfive;
 
 import "gogoproto/gogo.proto";
 import "fantasfive/params.proto";
+import "fantasfive/system_info.proto";
+import "fantasfive/stored_mw.proto";
+import "fantasfive/stored_team.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "fantasfive/x/fantasfive/types";
@@ -10,5 +13,8 @@ option go_package = "fantasfive/x/fantasfive/types";
 // GenesisState defines the fantasfive module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated SystemInfo systemInfoList = 2 [(gogoproto.nullable) = false];
+  repeated StoredMW storedMWList = 3 [(gogoproto.nullable) = false];
+  repeated StoredTeam storedTeamList = 4 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

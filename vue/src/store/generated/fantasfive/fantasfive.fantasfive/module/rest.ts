@@ -14,12 +14,93 @@
  */
 export type FantasfiveParams = object;
 
+export interface FantasfiveQueryAllStoredMWResponse {
+  storedMW?: FantasfiveStoredMW[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface FantasfiveQueryAllStoredTeamResponse {
+  storedTeam?: FantasfiveStoredTeam[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface FantasfiveQueryAllSystemInfoResponse {
+  systemInfo?: FantasfiveSystemInfo[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface FantasfiveQueryGetStoredMWResponse {
+  storedMW?: FantasfiveStoredMW;
+}
+
+export interface FantasfiveQueryGetStoredTeamResponse {
+  storedTeam?: FantasfiveStoredTeam;
+}
+
+export interface FantasfiveQueryGetSystemInfoResponse {
+  systemInfo?: FantasfiveSystemInfo;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface FantasfiveQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: FantasfiveParams;
+}
+
+export interface FantasfiveStoredMW {
+  index?: string;
+  playerPerf?: string;
+}
+
+export interface FantasfiveStoredTeam {
+  index?: string;
+  mwId?: string;
+  players?: string;
+  captainIndex?: string;
+  points?: string;
+  rank?: string;
+}
+
+export interface FantasfiveSystemInfo {
+  index?: string;
+
+  /** @format uint64 */
+  nextTeamId?: string;
+
+  /** @format uint64 */
+  nextMWId?: string;
 }
 
 export interface ProtobufAny {
@@ -31,6 +112,69 @@ export interface RpcStatus {
   code?: number;
   message?: string;
   details?: ProtobufAny[];
+}
+
+/**
+* message SomeRequest {
+         Foo some_parameter = 1;
+         PageRequest pagination = 2;
+ }
+*/
+export interface V1Beta1PageRequest {
+  /**
+   * key is a value returned in PageResponse.next_key to begin
+   * querying the next page most efficiently. Only one of offset or key
+   * should be set.
+   * @format byte
+   */
+  key?: string;
+
+  /**
+   * offset is a numeric offset that can be used when key is unavailable.
+   * It is less efficient than using key. Only one of offset or key should
+   * be set.
+   * @format uint64
+   */
+  offset?: string;
+
+  /**
+   * limit is the total number of results to be returned in the result page.
+   * If left empty it will default to a value to be set by each app.
+   * @format uint64
+   */
+  limit?: string;
+
+  /**
+   * count_total is set to true  to indicate that the result set should include
+   * a count of the total number of items available for pagination in UIs.
+   * count_total is only respected when offset is used. It is ignored when key
+   * is set.
+   */
+  count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
+}
+
+/**
+* PageResponse is to be embedded in gRPC response messages where the
+corresponding request message has used PageRequest.
+
+ message SomeResponse {
+         repeated Bar results = 1;
+         PageResponse page = 2;
+ }
+*/
+export interface V1Beta1PageResponse {
+  /** @format byte */
+  next_key?: string;
+
+  /** @format uint64 */
+  total?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -240,6 +384,132 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<FantasfiveQueryParamsResponse, RpcStatus>({
       path: `/fantasfive/fantasfive/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryStoredMwAll
+   * @summary Queries a list of StoredMW items.
+   * @request GET:/fantasfive/fantasfive/stored_mw
+   */
+  queryStoredMwAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FantasfiveQueryAllStoredMWResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/stored_mw`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryStoredMw
+   * @summary Queries a StoredMW by index.
+   * @request GET:/fantasfive/fantasfive/stored_mw/{index}
+   */
+  queryStoredMw = (index: string, params: RequestParams = {}) =>
+    this.request<FantasfiveQueryGetStoredMWResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/stored_mw/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryStoredTeamAll
+   * @summary Queries a list of StoredTeam items.
+   * @request GET:/fantasfive/fantasfive/stored_team
+   */
+  queryStoredTeamAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FantasfiveQueryAllStoredTeamResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/stored_team`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryStoredTeam
+   * @summary Queries a StoredTeam by index.
+   * @request GET:/fantasfive/fantasfive/stored_team/{index}
+   */
+  queryStoredTeam = (index: string, params: RequestParams = {}) =>
+    this.request<FantasfiveQueryGetStoredTeamResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/stored_team/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySystemInfoAll
+   * @summary Queries a list of SystemInfo items.
+   * @request GET:/fantasfive/fantasfive/system_info
+   */
+  querySystemInfoAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<FantasfiveQueryAllSystemInfoResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/system_info`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySystemInfo
+   * @summary Queries a SystemInfo by index.
+   * @request GET:/fantasfive/fantasfive/system_info/{index}
+   */
+  querySystemInfo = (index: string, params: RequestParams = {}) =>
+    this.request<FantasfiveQueryGetSystemInfoResponse, RpcStatus>({
+      path: `/fantasfive/fantasfive/system_info/${index}`,
       method: "GET",
       format: "json",
       ...params,

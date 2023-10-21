@@ -5,6 +5,9 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "fantasfive/params.proto";
+import "fantasfive/system_info.proto";
+import "fantasfive/stored_mw.proto";
+import "fantasfive/stored_team.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "fantasfive/x/fantasfive/types";
@@ -15,7 +18,37 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/fantasfive/fantasfive/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a SystemInfo by index.
+	rpc SystemInfo(QueryGetSystemInfoRequest) returns (QueryGetSystemInfoResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/system_info/{index}";
+	}
+
+	// Queries a list of SystemInfo items.
+	rpc SystemInfoAll(QueryAllSystemInfoRequest) returns (QueryAllSystemInfoResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/system_info";
+	}
+
+// Queries a StoredMW by index.
+	rpc StoredMW(QueryGetStoredMWRequest) returns (QueryGetStoredMWResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/stored_mw/{index}";
+	}
+
+	// Queries a list of StoredMW items.
+	rpc StoredMWAll(QueryAllStoredMWRequest) returns (QueryAllStoredMWResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/stored_mw";
+	}
+
+// Queries a StoredTeam by index.
+	rpc StoredTeam(QueryGetStoredTeamRequest) returns (QueryGetStoredTeamResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/stored_team/{index}";
+	}
+
+	// Queries a list of StoredTeam items.
+	rpc StoredTeamAll(QueryAllStoredTeamRequest) returns (QueryAllStoredTeamResponse) {
+		option (google.api.http).get = "/fantasfive/fantasfive/stored_team";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +58,60 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetSystemInfoRequest {
+	  string index = 1;
+
+}
+
+message QueryGetSystemInfoResponse {
+	SystemInfo systemInfo = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSystemInfoRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSystemInfoResponse {
+	repeated SystemInfo systemInfo = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetStoredMWRequest {
+	  string index = 1;
+
+}
+
+message QueryGetStoredMWResponse {
+	StoredMW storedMW = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllStoredMWRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllStoredMWResponse {
+	repeated StoredMW storedMW = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetStoredTeamRequest {
+	  string index = 1;
+
+}
+
+message QueryGetStoredTeamResponse {
+	StoredTeam storedTeam = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllStoredTeamRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllStoredTeamResponse {
+	repeated StoredTeam storedTeam = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
