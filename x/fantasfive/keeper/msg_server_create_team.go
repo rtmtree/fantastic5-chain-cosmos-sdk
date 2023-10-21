@@ -46,6 +46,21 @@ func (k msgServer) CreateTeam(goCtx context.Context, msg *types.MsgCreateTeam) (
 	teamInfo.NextId++
 	k.Keeper.SetTeamInfo(ctx, teamInfo)
 
+	//emit event
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.TeamCreatedEventType,
+			sdk.NewAttribute(types.TeamCreatedEventCreator, msg.Creator),
+			sdk.NewAttribute(types.TeamCreatedEventTeamId, team.StringTeamId()),
+			sdk.NewAttribute(types.TeamCreatedEventMwId, team.StringMatchWeekId()),
+			sdk.NewAttribute(types.TeamCreatedEventPlayer0, team.Players[0]),
+			sdk.NewAttribute(types.TeamCreatedEventPlayer1, team.Players[1]),
+			sdk.NewAttribute(types.TeamCreatedEventPlayer2, team.Players[2]),
+			sdk.NewAttribute(types.TeamCreatedEventPlayer3, team.Players[3]),
+			sdk.NewAttribute(types.TeamCreatedEventPlayer4, team.Players[4]),
+			sdk.NewAttribute(types.TeamCreatedEventCaptainIndex, team.StringCaptainIndex()),
+		),
+	)
+
 	return &types.MsgCreateTeamResponse{
 		TeamId: team.StringTeamId(),
 	}, nil

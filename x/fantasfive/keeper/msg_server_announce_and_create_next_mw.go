@@ -83,10 +83,26 @@ func (k msgServer) AnnounceAndCreateNextMw(goCtx context.Context, msg *types.Msg
 		k.Keeper.SetStoredTeam(ctx, team)
 	}
 
+	//emit event announcing this matchweek
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.MatchWeekAnnouncedEventType,
+			sdk.NewAttribute(types.MatchWeekAnnouncedEventAnnoucer, msg.Creator),
+			sdk.NewAttribute(types.MatchWeekAnnouncedEventMwId, rules.StringFromUint(uint(mwInfo.NextId))),
+		),
+	)
+
 	// update mwInfo
 	mwInfo.NextId++
 	nextMwId := uint(mwInfo.NextId)
 	k.Keeper.SetMwInfo(ctx, mwInfo)
+
+	// emit event creating next matchweek
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.MatchWeekCreatedEventType,
+			sdk.NewAttribute(types.MatchWeekCreatedEventCreator, msg.Creator),
+			sdk.NewAttribute(types.MatchWeekCreatedEventMwId, rules.StringFromUint(nextMwId)),
+		),
+	)
 
 	return &types.MsgAnnounceAndCreateNextMwResponse{
 		NextMwId: rules.StringFromUint(nextMwId),
