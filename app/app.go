@@ -98,17 +98,17 @@ import (
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
 
-	"fantas5/docs"
+	"fantasfive/docs"
 
-	fantas5module "fantas5/x/fantas5"
-	fantas5modulekeeper "fantas5/x/fantas5/keeper"
-	fantas5moduletypes "fantas5/x/fantas5/types"
+	fantasfivemodule "fantasfive/x/fantasfive"
+	fantasfivemodulekeeper "fantasfive/x/fantasfive/keeper"
+	fantasfivemoduletypes "fantasfive/x/fantasfive/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 const (
 	AccountAddressPrefix = "cosmos"
-	Name                 = "fantas5"
+	Name                 = "fantasfive"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
@@ -157,7 +157,7 @@ var (
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
-		fantas5module.AppModuleBasic{},
+		fantasfivemodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -230,7 +230,7 @@ type App struct {
 	ScopedTransferKeeper   capabilitykeeper.ScopedKeeper
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
-	Fantas5Keeper fantas5modulekeeper.Keeper
+	FantasFiveKeeper fantasfivemodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -267,7 +267,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
-		fantas5moduletypes.StoreKey,
+		fantasfivemoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -389,13 +389,13 @@ func New(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
-	app.Fantas5Keeper = *fantas5modulekeeper.NewKeeper(
+	app.FantasFiveKeeper = *fantasfivemodulekeeper.NewKeeper(
 		appCodec,
-		keys[fantas5moduletypes.StoreKey],
-		keys[fantas5moduletypes.MemStoreKey],
-		app.GetSubspace(fantas5moduletypes.ModuleName),
+		keys[fantasfivemoduletypes.StoreKey],
+		keys[fantasfivemoduletypes.MemStoreKey],
+		app.GetSubspace(fantasfivemoduletypes.ModuleName),
 	)
-	fantas5Module := fantas5module.NewAppModule(appCodec, app.Fantas5Keeper, app.AccountKeeper, app.BankKeeper)
+	fantasfiveModule := fantasfivemodule.NewAppModule(appCodec, app.FantasFiveKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -438,7 +438,7 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		monitoringModule,
-		fantas5Module,
+		fantasfiveModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -466,7 +466,7 @@ func New(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
-		fantas5moduletypes.ModuleName,
+		fantasfivemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -490,7 +490,7 @@ func New(
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
-		fantas5moduletypes.ModuleName,
+		fantasfivemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -519,7 +519,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
-		fantas5moduletypes.ModuleName,
+		fantasfivemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -544,7 +544,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		monitoringModule,
-		fantas5Module,
+		fantasfiveModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -734,7 +734,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
-	paramsKeeper.Subspace(fantas5moduletypes.ModuleName)
+	paramsKeeper.Subspace(fantasfivemoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

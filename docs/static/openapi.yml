@@ -18782,10 +18782,10 @@ paths:
           format: int64
       tags:
         - Query
-  /fantas5/fantas5/params:
+  /fantasfive/fantasfive/params:
     get:
       summary: Parameters queries the parameters of the module.
-      operationId: Fantas5Fantas5Params
+      operationId: FantasfiveFantasfiveParams
       responses:
         '200':
           description: A successful response.
@@ -44692,10 +44692,10 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
-  fantas5.fantas5.Params:
+  fantasfive.fantasfive.Params:
     type: object
     description: Params defines the parameters for the module.
-  fantas5.fantas5.QueryParamsResponse:
+  fantasfive.fantasfive.QueryParamsResponse:
     type: object
     properties:
       params:

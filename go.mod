@@ -1,4 +1,4 @@
-module fantas5
+module fantasfive
 
 go 1.16
 

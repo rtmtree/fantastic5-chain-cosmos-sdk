@@ -5,7 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"fantas5/app"
+	"fantasfive/app"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/simapp"
