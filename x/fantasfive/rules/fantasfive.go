@@ -3,6 +3,7 @@ package rules
 import (
 	"bytes"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -15,13 +16,13 @@ const (
 )
 
 type Team struct {
-	Id           int
-	MWId         int                // matchweek id
+	Id           uint
+	MWId         uint               // matchweek id
 	Owner        string             // owner address/ reference to the owner
 	Players      [PLAYER_LEN]string // array of player names, for now we'll use strings for an easy visualization
-	CaptainIndex int
-	Points       int // default -1
-	Rank         int // default -1
+	CaptainIndex uint
+	Points       int  // default -1
+	Rank         uint // default 0
 }
 
 type PlayersPerformance struct {
@@ -50,7 +51,7 @@ func (team *Team) String() string {
 	buf.WriteString(fmt.Sprintf(" Captain:%s", team.Players[team.CaptainIndex]))
 
 	//print RANK and POINTS
-	if team.Rank != -1 {
+	if team.Rank != 0 {
 		buf.WriteString(fmt.Sprintf(" Rank: %d", team.Rank))
 	} else {
 		buf.WriteString(" Rank:Unranked")
@@ -73,7 +74,7 @@ func Parse(teamAsString string) (*Team, error) {
 	team_owner := ""
 	team_mwid := -1
 	team_points := -1
-	team_rank := -1
+	team_rank := 0
 	for y, row := range strings.Split(teamAsString, " ") {
 		if y < PLAYER_LEN {
 			players[y] = row
@@ -96,7 +97,7 @@ func Parse(teamAsString string) (*Team, error) {
 				return nil, fmt.Errorf("invalid rank format")
 			}
 			if rank[1] == "Unranked" {
-				team_rank = -1
+				team_rank = 0
 			} else {
 				team_rank = y
 			}
@@ -144,13 +145,8 @@ func Parse(teamAsString string) (*Team, error) {
 
 	}
 
-	// check if all fields are present
-	if team_id == -1 || team_owner == "" || team_mwid == -1 || team_points == -1 || team_rank == -1 {
-		return nil, fmt.Errorf("invalid team format")
-	}
-
 	// return team
-	return &Team{team_id, team_mwid, team_owner, players, captain_index, team_points, team_rank}, nil
+	return &Team{uint(team_id), uint(team_mwid), team_owner, players, uint(captain_index), team_points, uint(team_rank)}, nil
 }
 
 func (team *Team) StringPlayers() string {
@@ -180,47 +176,60 @@ func ParsePlayers(teamAsString string) (*[PLAYER_LEN]string, error) {
 	return &players, nil
 }
 
-func NewTeam(id int, matchweekId int, owner string, players [PLAYER_LEN]string) (*Team, error) {
+func NewTeam(id uint, matchweekId uint, owner string, players [PLAYER_LEN]string) (*Team, error) {
 	// in the future we can add captain index as a parameter
-	team := &Team{id, matchweekId, owner, players, DEFAULT_CAPTAIN_INDEX, -1, -1}
+	team := &Team{id, matchweekId, owner, players, DEFAULT_CAPTAIN_INDEX, -1, 0}
 	if err := team.Valid(); err != nil {
 		return nil, err
 	}
 	return team, nil
 }
 
-func ParseMatchWeekId(matchweekIdAsString string) (int, error) {
-	// string to int
-	matchweekId, err := fmt.Sscanf(matchweekIdAsString, "%d", &matchweekIdAsString)
+func ParseMatchWeekId(matchweekIdAsString string) (uint, error) {
+	// string to uint
+	idAsU64, err := strconv.ParseUint(matchweekIdAsString, 10, 32)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
-	return matchweekId, nil
+	return uint(idAsU64), nil
 }
 
-func ParseTeamId(teamIdAsString string) (int, error) {
-	// string to int
-	teamId, err := fmt.Sscanf(teamIdAsString, "%d", &teamIdAsString)
+func ParseTeamId(teamIdAsString string) (uint, error) {
+	// string to uint
+	idAsU64, err := strconv.ParseUint(teamIdAsString, 10, 32)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
-	return teamId, nil
+	return uint(idAsU64), nil
 }
 func ParsePoints(pointsAsString string) (int, error) {
 	// string to int
-	points, err := fmt.Sscanf(pointsAsString, "%d", &pointsAsString)
+	pointsAsI64, err := strconv.ParseInt(pointsAsString, 10, 32)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
-	return points, nil
+	return int(pointsAsI64), nil
 }
-func ParseRank(rankAsString string) (int, error) {
-	// string to int
-	rank, err := fmt.Sscanf(rankAsString, "%d", &rankAsString)
+func ParseRank(rankAsString string) (uint, error) {
+	// string to uint
+	rankAsU64, err := strconv.ParseUint(rankAsString, 10, 32)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
-	return rank, nil
+	return uint(rankAsU64), nil
+}
+
+func (team *Team) StringPoints() string {
+	return fmt.Sprintf("%d", team.Points)
+}
+func (team *Team) StringRank() string {
+	return fmt.Sprintf("%d", team.Rank)
+}
+func (team *Team) StringTeamId() string {
+	return fmt.Sprintf("%d", team.Id)
+}
+func (team *Team) StringMatchWeekId() string {
+	return fmt.Sprintf("%d", team.MWId)
 }
 
 func (team *Team) Valid() error {
@@ -239,7 +248,7 @@ func (team *Team) Valid() error {
 	}
 
 	//check if captain index is valid
-	if team.CaptainIndex < 0 || team.CaptainIndex >= PLAYER_LEN {
+	if team.CaptainIndex >= PLAYER_LEN {
 		return fmt.Errorf("invalid captain index")
 	}
 
@@ -301,7 +310,7 @@ func (playersperformance *PlayersPerformance) CalculatePointByTeam(team Team) in
 	for i, player := range team.Players {
 		point := playersperformance.CalculatePointByPlayer(player)
 		// if the player is the captain, multiply the points by CAPTAIN_POINT_FACTOR
-		if i == team.CaptainIndex {
+		if uint(i) == team.CaptainIndex {
 			point = point * CAPTAIN_POINT_FACTOR
 		}
 		points = points + point

@@ -4,22 +4,22 @@ import (
 	"fmt"
 )
 
-// DefaultIndex is the default capability global index
-const DefaultIndex uint64 = 1
+// Default index
+const DefaultMwIndex uint64 = 1
+const DefaultTeamIndex uint64 = 0
 
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		SystemInfoList: []SystemInfo{
-			{
-				NextMWId:   DefaultIndex,
-				NextTeamId: DefaultIndex,
-			},
-		},
+		SystemInfoList: []SystemInfo{},
 		StoredMWList:   []StoredMW{},
 		StoredTeamList: []StoredTeam{},
-		MwInfo:         nil,
-		TeamInfo:       nil,
+		MwInfo: MwInfo{
+			NextId: uint64(DefaultMwIndex),
+		},
+		TeamInfo: TeamInfo{
+			NextId: uint64(DefaultTeamIndex),
+		},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}

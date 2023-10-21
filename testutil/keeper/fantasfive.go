@@ -18,7 +18,7 @@ import (
 	tmdb "github.com/tendermint/tm-db"
 )
 
-func FantasFiveKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func FantasfiveKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 

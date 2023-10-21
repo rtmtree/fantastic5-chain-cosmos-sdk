@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fantasfive/x/fantasfive/rules"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -46,5 +48,11 @@ func (msg *MsgCreateTeam) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	_, err = rules.NewTeam(0, 0, msg.Creator, [rules.PLAYER_LEN]string{msg.Player0, msg.Player1, msg.Player2, msg.Player3, msg.Player4})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

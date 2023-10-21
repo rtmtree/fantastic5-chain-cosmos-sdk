@@ -18,7 +18,7 @@ message GenesisState {
   repeated SystemInfo systemInfoList = 2 [(gogoproto.nullable) = false];
   repeated StoredMW storedMWList = 3 [(gogoproto.nullable) = false];
   repeated StoredTeam storedTeamList = 4 [(gogoproto.nullable) = false];
-  MwInfo mwInfo = 5;
-  TeamInfo teamInfo = 6;
+  MwInfo mwInfo = 5 [(gogoproto.nullable) = false];
+  TeamInfo teamInfo = 6 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

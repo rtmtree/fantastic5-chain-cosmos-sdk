@@ -19,7 +19,7 @@ import (
 var _ = strconv.IntSize
 
 func TestSystemInfoQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.FantasFiveKeeper(t)
+	keeper, ctx := keepertest.FantasfiveKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNSystemInfo(keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -70,7 +70,7 @@ func TestSystemInfoQuerySingle(t *testing.T) {
 }
 
 func TestSystemInfoQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.FantasFiveKeeper(t)
+	keeper, ctx := keepertest.FantasfiveKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNSystemInfo(keeper, ctx, 5)
 

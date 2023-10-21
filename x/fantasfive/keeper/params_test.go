@@ -10,7 +10,7 @@ import (
 )
 
 func TestGetParams(t *testing.T) {
-	k, ctx := testkeeper.FantasFiveKeeper(t)
+	k, ctx := testkeeper.FantasfiveKeeper(t)
 	params := types.DefaultParams()
 
 	k.SetParams(ctx, params)

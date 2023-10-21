@@ -27,7 +27,7 @@ func createNStoredMW(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Stor
 }
 
 func TestStoredMWGet(t *testing.T) {
-	keeper, ctx := keepertest.FantasFiveKeeper(t)
+	keeper, ctx := keepertest.FantasfiveKeeper(t)
 	items := createNStoredMW(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetStoredMW(ctx,
@@ -41,7 +41,7 @@ func TestStoredMWGet(t *testing.T) {
 	}
 }
 func TestStoredMWRemove(t *testing.T) {
-	keeper, ctx := keepertest.FantasFiveKeeper(t)
+	keeper, ctx := keepertest.FantasfiveKeeper(t)
 	items := createNStoredMW(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveStoredMW(ctx,
@@ -55,7 +55,7 @@ func TestStoredMWRemove(t *testing.T) {
 }
 
 func TestStoredMWGetAll(t *testing.T) {
-	keeper, ctx := keepertest.FantasFiveKeeper(t)
+	keeper, ctx := keepertest.FantasfiveKeeper(t)
 	items := createNStoredMW(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),

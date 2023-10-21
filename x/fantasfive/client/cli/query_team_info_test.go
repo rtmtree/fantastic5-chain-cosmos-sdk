@@ -21,13 +21,13 @@ func networkWithTeamInfoObjects(t *testing.T) (*network.Network, types.TeamInfo)
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
-	teamInfo := &types.TeamInfo{}
+	teamInfo := types.TeamInfo{}
 	nullify.Fill(&teamInfo)
 	state.TeamInfo = teamInfo
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), *state.TeamInfo
+	return network.New(t, cfg), state.TeamInfo
 }
 
 func TestShowTeamInfo(t *testing.T) {

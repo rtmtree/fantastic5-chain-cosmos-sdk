@@ -230,7 +230,7 @@ type App struct {
 	ScopedTransferKeeper   capabilitykeeper.ScopedKeeper
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
-	FantasFiveKeeper fantasfivemodulekeeper.Keeper
+	FantasfiveKeeper fantasfivemodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -389,13 +389,13 @@ func New(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
-	app.FantasFiveKeeper = *fantasfivemodulekeeper.NewKeeper(
+	app.FantasfiveKeeper = *fantasfivemodulekeeper.NewKeeper(
 		appCodec,
 		keys[fantasfivemoduletypes.StoreKey],
 		keys[fantasfivemoduletypes.MemStoreKey],
 		app.GetSubspace(fantasfivemoduletypes.ModuleName),
 	)
-	fantasfiveModule := fantasfivemodule.NewAppModule(appCodec, app.FantasFiveKeeper, app.AccountKeeper, app.BankKeeper)
+	fantasfiveModule := fantasfivemodule.NewAppModule(appCodec, app.FantasfiveKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
