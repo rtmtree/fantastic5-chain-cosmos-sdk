@@ -22,7 +22,9 @@ export interface MsgAnnounceAndCreateNextMw {
   playerPerf: string;
 }
 
-export interface MsgAnnounceAndCreateNextMwResponse {}
+export interface MsgAnnounceAndCreateNextMwResponse {
+  nextMwId: string;
+}
 
 const baseMsgCreateTeam: object = {
   creator: "",
@@ -338,13 +340,16 @@ export const MsgAnnounceAndCreateNextMw = {
   },
 };
 
-const baseMsgAnnounceAndCreateNextMwResponse: object = {};
+const baseMsgAnnounceAndCreateNextMwResponse: object = { nextMwId: "" };
 
 export const MsgAnnounceAndCreateNextMwResponse = {
   encode(
-    _: MsgAnnounceAndCreateNextMwResponse,
+    message: MsgAnnounceAndCreateNextMwResponse,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.nextMwId !== "") {
+      writer.uint32(10).string(message.nextMwId);
+    }
     return writer;
   },
 
@@ -360,6 +365,9 @@ export const MsgAnnounceAndCreateNextMwResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.nextMwId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -368,24 +376,35 @@ export const MsgAnnounceAndCreateNextMwResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgAnnounceAndCreateNextMwResponse {
+  fromJSON(object: any): MsgAnnounceAndCreateNextMwResponse {
     const message = {
       ...baseMsgAnnounceAndCreateNextMwResponse,
     } as MsgAnnounceAndCreateNextMwResponse;
+    if (object.nextMwId !== undefined && object.nextMwId !== null) {
+      message.nextMwId = String(object.nextMwId);
+    } else {
+      message.nextMwId = "";
+    }
     return message;
   },
 
-  toJSON(_: MsgAnnounceAndCreateNextMwResponse): unknown {
+  toJSON(message: MsgAnnounceAndCreateNextMwResponse): unknown {
     const obj: any = {};
+    message.nextMwId !== undefined && (obj.nextMwId = message.nextMwId);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgAnnounceAndCreateNextMwResponse>
+    object: DeepPartial<MsgAnnounceAndCreateNextMwResponse>
   ): MsgAnnounceAndCreateNextMwResponse {
     const message = {
       ...baseMsgAnnounceAndCreateNextMwResponse,
     } as MsgAnnounceAndCreateNextMwResponse;
+    if (object.nextMwId !== undefined && object.nextMwId !== null) {
+      message.nextMwId = object.nextMwId;
+    } else {
+      message.nextMwId = "";
+    }
     return message;
   },
 };
