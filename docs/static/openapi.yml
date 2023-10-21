@@ -45287,6 +45287,8 @@ definitions:
     description: >-
       MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount
       response type.
+  fantasfive.fantasfive.MsgAnnounceAndCreateNextMwResponse:
+    type: object
   fantasfive.fantasfive.MsgCreateTeamResponse:
     type: object
     properties:

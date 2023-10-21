@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type FantasfiveMsgAnnounceAndCreateNextMwResponse = object;
+
 export interface FantasfiveMsgCreateTeamResponse {
   teamId?: string;
 }

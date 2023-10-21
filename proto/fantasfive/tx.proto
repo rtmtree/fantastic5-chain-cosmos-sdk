@@ -8,6 +8,7 @@ option go_package = "fantasfive/x/fantasfive/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CreateTeam(MsgCreateTeam) returns (MsgCreateTeamResponse);
+  rpc AnnounceAndCreateNextMw(MsgAnnounceAndCreateNextMw) returns (MsgAnnounceAndCreateNextMwResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -22,6 +23,15 @@ message MsgCreateTeam {
 
 message MsgCreateTeamResponse {
   string teamId = 1;
+}
+
+message MsgAnnounceAndCreateNextMw {
+  string creator = 1;
+  string mwId = 2;
+  string playerPerf = 3;
+}
+
+message MsgAnnounceAndCreateNextMwResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

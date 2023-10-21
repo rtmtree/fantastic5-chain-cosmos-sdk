@@ -29,6 +29,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateTeam int = 100
 
+	opWeightMsgAnnounceAndCreateNextMw = "op_weight_msg_announce_and_create_next_mw"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAnnounceAndCreateNextMw int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -72,6 +76,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateTeam,
 		fantasfivesimulation.SimulateMsgCreateTeam(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAnnounceAndCreateNextMw int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAnnounceAndCreateNextMw, &weightMsgAnnounceAndCreateNextMw, nil,
+		func(_ *rand.Rand) {
+			weightMsgAnnounceAndCreateNextMw = defaultWeightMsgAnnounceAndCreateNextMw
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAnnounceAndCreateNextMw,
+		fantasfivesimulation.SimulateMsgAnnounceAndCreateNextMw(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
