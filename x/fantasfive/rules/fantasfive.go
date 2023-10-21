@@ -8,11 +8,11 @@ import (
 )
 
 const (
-	PLAYER_LEN            = 5
-	POINT_PER_ASSIST      = 3
-	POINT_PER_GOAL        = 6
-	CAPTAIN_POINT_FACTOR  = 2 // factor to multiply the points of the captain
-	DEFAULT_CAPTAIN_INDEX = 0 // index of captain in player array, for now we'll just force it's the first player
+	PLAYER_LEN                 = 5
+	POINT_PER_ASSIST      uint = 3
+	POINT_PER_GOAL        uint = 6
+	CAPTAIN_POINT_FACTOR       = 2 // factor to multiply the points of the captain
+	DEFAULT_CAPTAIN_INDEX      = 0 // index of captain in player array, for now we'll just force it's the first player
 )
 
 type Team struct {
@@ -27,8 +27,8 @@ type Team struct {
 
 type PlayersPerformance struct {
 	Players []string
-	Goals   []int
-	Assists []int
+	Goals   []uint
+	Assists []uint
 }
 
 func init() {
@@ -231,6 +231,13 @@ func (team *Team) StringTeamId() string {
 func (team *Team) StringMatchWeekId() string {
 	return fmt.Sprintf("%d", team.MWId)
 }
+func (team *Team) StringCaptainIndex() string {
+	return fmt.Sprintf("%d", team.CaptainIndex)
+}
+
+func StringFromUint(input uint) string {
+	return fmt.Sprintf("%d", input)
+}
 
 func (team *Team) Valid() error {
 	//check if there are 5 players
@@ -289,36 +296,24 @@ func (playersperformance *PlayersPerformance) ValidPlayersPerformance() error {
 		return fmt.Errorf("invalid players performance length")
 	}
 
-	//check if all goals and assists are positive
-	for i, goal := range playersperformance.Goals {
-		if goal < 0 {
-			return fmt.Errorf("invalid goal value for player %s", playersperformance.Players[i])
-		}
-	}
-	for i, assist := range playersperformance.Assists {
-		if assist < 0 {
-			return fmt.Errorf("invalid assist value for player %s", playersperformance.Players[i])
-		}
-	}
-
 	return nil
 }
 
-func (playersperformance *PlayersPerformance) CalculatePointByTeam(team Team) int {
+func (playersperformance *PlayersPerformance) CalculatePointByTeam(team Team) uint {
 	// calculate points for each player
-	points := 0
+	points := uint(0)
 	for i, player := range team.Players {
 		point := playersperformance.CalculatePointByPlayer(player)
 		// if the player is the captain, multiply the points by CAPTAIN_POINT_FACTOR
 		if uint(i) == team.CaptainIndex {
 			point = point * CAPTAIN_POINT_FACTOR
 		}
-		points = points + point
+		points += point
 	}
 	return points
 }
 
-func (playersperformance *PlayersPerformance) CalculatePointByPlayer(player string) int {
+func (playersperformance *PlayersPerformance) CalculatePointByPlayer(player string) uint {
 	// calculate points for a player
 	for j, p := range playersperformance.Players {
 		if player == p {
@@ -353,4 +348,69 @@ func CalculateRank(teams []Team) ([]int, error) {
 		rankList[i] = rank
 	}
 	return rankList, nil
+}
+
+func CalculateRankByPoints(points []uint) ([]uint, error) {
+	// calculate rank
+	// if points are equal, sort by index, we consider the earlier team deserves a higher rank
+	rankList := make([]uint, len(points))
+	for i, point := range points {
+		rank := uint(1)
+		for j, p := range points {
+			if i != j {
+				if point < p {
+					rank++
+				} else if point == p && i > j {
+					rank++
+				}
+			}
+		}
+		rankList[i] = rank
+	}
+	return rankList, nil
+}
+
+func NewPlayersPerformanceFromString(playersAsString string) (*PlayersPerformance, error) {
+	playerPerf, err := ParsePlayersPerformance(playersAsString)
+	if err != nil {
+		return nil, err
+	}
+	return playerPerf, nil
+}
+
+// Let use pattern of "player0-goal0-assist0-player1-goal1-assist1-..."
+func ParsePlayersPerformance(playersAsString string) (*PlayersPerformance, error) {
+	// split by space
+	players := []string{}
+	goals := []uint{}
+	assists := []uint{}
+	for y, row := range strings.Split(playersAsString, "-") {
+		if y%3 == 0 {
+			players = append(players, row)
+		} else if y%3 == 1 {
+			goal, err := strconv.ParseUint(row, 10, 32)
+			if err != nil {
+				return nil, err
+			}
+			goals = append(goals, uint(goal))
+		} else {
+			assist, err := strconv.ParseUint(row, 10, 32)
+			if err != nil {
+				return nil, err
+			}
+			assists = append(assists, uint(assist))
+		}
+	}
+
+	// check if 3 lists have the same length
+	if len(players) != len(goals) || len(players) != len(assists) {
+		return nil, fmt.Errorf("invalid players performance length")
+	}
+
+	return &PlayersPerformance{players, goals, assists}, nil
+}
+
+func ParseCaptainIndex(captainIndex string) (uint, error) {
+	result, err := strconv.ParseUint(captainIndex, 10, 32)
+	return uint(result), err
 }

@@ -4,13 +4,11 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgAnnounceAndCreateNextMw } from "./types/fantasfive/tx";
 import { MsgCreateTeam } from "./types/fantasfive/tx";
 import { MsgAnnounceAndCreateNextMw } from "./types/fantasfive/tx";
 
 
 const types = [
-  ["/fantasfive.fantasfive.MsgAnnounceAndCreateNextMw", MsgAnnounceAndCreateNextMw],
   ["/fantasfive.fantasfive.MsgCreateTeam", MsgCreateTeam],
   ["/fantasfive.fantasfive.MsgAnnounceAndCreateNextMw", MsgAnnounceAndCreateNextMw],
   
@@ -45,7 +43,6 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgAnnounceAndCreateNextMw: (data: MsgAnnounceAndCreateNextMw): EncodeObject => ({ typeUrl: "/fantasfive.fantasfive.MsgAnnounceAndCreateNextMw", value: MsgAnnounceAndCreateNextMw.fromPartial( data ) }),
     msgCreateTeam: (data: MsgCreateTeam): EncodeObject => ({ typeUrl: "/fantasfive.fantasfive.MsgCreateTeam", value: MsgCreateTeam.fromPartial( data ) }),
     msgAnnounceAndCreateNextMw: (data: MsgAnnounceAndCreateNextMw): EncodeObject => ({ typeUrl: "/fantasfive.fantasfive.MsgAnnounceAndCreateNextMw", value: MsgAnnounceAndCreateNextMw.fromPartial( data ) }),
     

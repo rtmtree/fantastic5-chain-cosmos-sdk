@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"fantasfive/testutil/sample"
+
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
 )
@@ -24,6 +25,18 @@ func TestMsgAnnounceAndCreateNextMw_ValidateBasic(t *testing.T) {
 			name: "valid address",
 			msg: MsgAnnounceAndCreateNextMw{
 				Creator: sample.AccAddress(),
+			},
+		}, {
+			name: "invalid player performance",
+			msg: MsgAnnounceAndCreateNextMw{
+				Creator:    sample.AccAddress(),
+				PlayerPerf: "Ronaldo 0 -9 Messi 1 8",
+			},
+		}, {
+			name: "valid player performance",
+			msg: MsgAnnounceAndCreateNextMw{
+				Creator:    sample.AccAddress(),
+				PlayerPerf: "Ronaldo 0 9 Messi 1 8",
 			},
 		},
 	}

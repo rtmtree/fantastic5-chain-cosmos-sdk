@@ -45289,6 +45289,9 @@ definitions:
       response type.
   fantasfive.fantasfive.MsgAnnounceAndCreateNextMwResponse:
     type: object
+    properties:
+      nextMwId:
+        type: string
   fantasfive.fantasfive.MsgCreateTeamResponse:
     type: object
     properties:

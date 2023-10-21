@@ -28,12 +28,13 @@ func (k msgServer) CreateTeam(goCtx context.Context, msg *types.MsgCreateTeam) (
 	}
 
 	storedTeam := types.StoredTeam{
-		Index:   team.StringTeamId(),
-		MwId:    team.StringMatchWeekId(),
-		Owner:   team.Owner,
-		Players: team.StringPlayers(),
-		Points:  team.StringPoints(),
-		Rank:    team.StringRank(),
+		CaptainIndex: team.StringCaptainIndex(),
+		Index:        team.StringTeamId(),
+		MwId:         team.StringMatchWeekId(),
+		Owner:        team.Owner,
+		Players:      team.StringPlayers(),
+		Points:       team.StringPoints(),
+		Rank:         team.StringRank(),
 	}
 
 	err = storedTeam.Validate()

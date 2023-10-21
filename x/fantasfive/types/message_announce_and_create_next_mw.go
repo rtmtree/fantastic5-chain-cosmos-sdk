@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fantasfive/x/fantasfive/rules"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -43,5 +45,20 @@ func (msg *MsgAnnounceAndCreateNextMw) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	// TODO: validate Creator is Authorized b/c announcing is important
+
+	// Check if PlayerPerf is valid
+	playerPerf, err := rules.ParsePlayersPerformance(msg.PlayerPerf)
+	if err != nil {
+		return err
+	}
+
+	// Check if MwId is valid
+	err = playerPerf.ValidPlayersPerformance()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
