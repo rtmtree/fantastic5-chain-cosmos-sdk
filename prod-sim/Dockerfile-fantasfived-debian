@@ -1,0 +1,8 @@
+FROM --platform=linux debian:11-slim
+ARG BUILDARCH
+
+ENV LOCAL=/usr/local
+
+COPY build/fantasfived-linux-${BUILDARCH} ${LOCAL}/bin/fantasfived
+
+ENTRYPOINT [ "fantasfived" ]
