@@ -107,6 +107,13 @@ func (k msgServer) AnnounceAndCreateNextMw(goCtx context.Context, msg *types.Msg
 		),
 	)
 
+	// save current mw to store
+	storedMw := types.StoredMW{
+		Index:      rules.StringFromUint(uint(mwInfo.NextId)),
+		PlayerPerf: msg.PlayerPerf,
+	}
+	k.Keeper.SetStoredMW(ctx, storedMw)
+
 	// update mwInfo
 	mwInfo.NextId++
 	nextMwId := uint(mwInfo.NextId)
