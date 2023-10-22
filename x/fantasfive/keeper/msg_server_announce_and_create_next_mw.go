@@ -65,6 +65,12 @@ func (k msgServer) AnnounceAndCreateNextMw(goCtx context.Context, msg *types.Msg
 				break
 			}
 		}
+		//reverse team ids and points so that the earliest team is considered better
+		//reverse team  so that the earliest team is considered better
+		for i, j := 0, len(teamIds)-1; i < j; i, j = i+1, j-1 {
+			teamIds[i], teamIds[j] = teamIds[j], teamIds[i]
+			teamPoints[i], teamPoints[j] = teamPoints[j], teamPoints[i]
+		}
 	}
 
 	// cache team ranks
