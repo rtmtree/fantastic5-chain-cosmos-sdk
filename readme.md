@@ -4,7 +4,7 @@
 
 For those who are new to Football Fantasy, it is a game where you can create your own team with your favorite players and compete with other teams. The performance of the players in the real world will be used to calculate the points of the teams. The team with the highest points will be the winner. More information can be found [here](https://fantasy.premierleague.com/help/rules).
 
-In this blockchain, we downsized the game to 5 players per team. Each goal scored by the player will be 6 points and each assist will be 3 points. Captain of the team will get double points.
+In this blockchain, we downsized the game to 5 players per team. Each goal scored by the player will be 6 points and each assist will be 3 points. Captain of the team will get double points. If 2 or more teams have the same points, the team that submitted the transaction earlier will be ranked higher.
 
 ## Web Frontend + Demo DApp
 
@@ -16,7 +16,11 @@ To start the blockchain.
 
 ```
 ignite chain serve
+
+# for resetting the blockchain state
+ignite chain serve --reset-once
 ```
+Ok, now the blockchain is running. Let's keep it and open another terminal.
 
 To save some alias for the addresses so that we can use them later.
 
@@ -32,14 +36,14 @@ In this example, Alice and Bob addresses are `cosmos1anwhl0pavlq0s033gp5n9nq94vy
 fantasfived query fantasfive show-mw-info
 ```
 
-This should return something like this:
+This should return:
 
 ```
 MwInfo:
   nextId: "1"
 ```
 
-Which means that the current Matchweek Id is 1.
+Which means that the current Matchweek is 1.
 
 #### Create a Team to participate in the Matchweek
 
@@ -62,13 +66,10 @@ fantasfived tx fantasfive create-team Hal Kev Kyl Rub Ede --from $bob --gas auto
 fantasfived query fantasfive list-stored-team
 ```
 
-This should return something like this:
+This should return:
 
 ```
- pagination:
-  next_key: null
-  total: "0"
-storedTeam:
+...
 - captainIndex: "0"
   index: "0"
   mwId: "1"
@@ -98,9 +99,10 @@ storedTeam:
   points: "-1"
   rank: "0"
 ```
-`-1` Points and `0` Rank mean that the matchweek has not announced the performance of the players yet.
+`mwId` represents the Matchweek that the team is participating in.
+`-1` Points and `0` Rank mean that the Matchweek has not announced the performance of the players yet.
 
-ps. For simplicity, we use the first player as the captain of the team.
+ps. For simplicity, we determine the first player in the team as the captain.
 
 #### Announce Players Performance of the Matchweek
 
@@ -108,7 +110,8 @@ ps. For simplicity, we use the first player as the captain of the team.
 fantasfived tx fantasfive announce-and-create-next-mw 1 Son-4-9-Kane-1-0-Ric-1-1-Hal-9-3 --from $alice --gas auto
 ```
 
-This means that Alice (someone trustworthy) announces the performance of the players in the Matchweek 1. The performance is: Son Scored 4 goals, 9 assists, Kane Scored 1 goal, 0 assists, Ric Scored 1 goal, 1 assist, Hal Scored 9 goals, 3 assists. This will also create the next Matchweek.
+This means that Alice (someone trustworthy) announces the performance of the players in the Matchweek 1. The performance is: Son Scored 4 goals, 9 assists, Kane Scored 1 goal, 0 assists and so on.
+This will also create the next Matchweek.
 There will be a prompt to confirm the transaction. Type `y` to confirm.
 
 #### List all teams again
@@ -117,44 +120,44 @@ There will be a prompt to confirm the transaction. Type `y` to confirm.
 fantasfived query fantasfive list-stored-team
 ```
 
-This should return something like this:
+This should return:
 
 ```
-pagination:
-  next_key: null
-  total: "0"
-storedTeam:
+...
 - captainIndex: "0"
   index: "0"
   mwId: "1"
-  owner: cosmos1anwhl0pavlq0s033gp5n9nq94vytj2ac3ne9fv
+  owner: cosmos1hw33pv2048nmur5vazk0xgnh06dytnvahz7tsp
   players: Ron-Ney-Mes-Mba-Sal
-  points: "0"
-  rank: "4"
-- captainIndex: "0"
-  index: "1"
-  mwId: "1"
-  owner: cosmos1anwhl0pavlq0s033gp5n9nq94vytj2ac3ne9fv
-  players: Ras-Ant-San-Lis-Ona
   points: "0"
   rank: "3"
 - captainIndex: "0"
+  index: "1"
+  mwId: "1"
+  owner: cosmos1hw33pv2048nmur5vazk0xgnh06dytnvahz7tsp
+  players: Ras-Ant-San-Lis-Ona
+  points: "0"
+  rank: "4"
+- captainIndex: "0"
   index: "2"
   mwId: "1"
-  owner: cosmos13ze49rf37h9tq46mydmsllaemhwn0l5jpgsswa
+  owner: cosmos13evd8w4nejh57v7y8q3g2rhrmtldtyqup4ps9j
   players: Son-Jam-Rom-Ric-Kul
   points: "111"
   rank: "2"
 - captainIndex: "0"
   index: "3"
   mwId: "1"
-  owner: cosmos13ze49rf37h9tq46mydmsllaemhwn0l5jpgsswa
+  owner: cosmos13evd8w4nejh57v7y8q3g2rhrmtldtyqup4ps9j
   players: Hal-Kev-Kyl-Rub-Ede
   points: "126"
   rank: "1"
 ```
 
-This means that teamId(`index`) 3 is the winner of the Matchweek 1 with 126 points and teamId 2 is the runner-up with 111 points.
+This means that TeamId (`index`) 3 is the winner of the Matchweek 1 with 126 points and TeamId 2 is the runner-up with 111 points.
+TeamId 0 and 1 got 0 points because they did not have any players that scored or assisted in the Matchweek 1.
+
+ps. TeamId 0 ranked higher than TeamId 1 because the TeamId 0 submitted the transaction earlier.
 
 #### Verify current Matchweek Id again
 
@@ -162,14 +165,14 @@ This means that teamId(`index`) 3 is the winner of the Matchweek 1 with 126 poin
 fantasfived query fantasfive show-mw-info
 ```
 
-This should return something like this:
+This should return:
 
 ```
 MwInfo:
   nextId: "2"
 ```
 
-Which means that the Matchweek Id is currently 2.
+Which means that the Matchweek is currently 2.
 
 The process can be repeated for the next Matchweek and so on.
 
