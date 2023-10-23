@@ -30,6 +30,7 @@ spec:
         - args:
             - start
           image: fantasfived_i
+          imagePullPolicy: Never
           name: sentry-bob
           resources: {}
           volumeMounts:
