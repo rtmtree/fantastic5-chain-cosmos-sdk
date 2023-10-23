@@ -48,5 +48,5 @@ spec:
       volumes:
         - name: node-carol-claim0
           hostPath:
-            path: ./../node-carol
+            path: ./node-carol
 status: {}
