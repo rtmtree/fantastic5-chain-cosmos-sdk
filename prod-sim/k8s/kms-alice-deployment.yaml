@@ -32,6 +32,7 @@ spec:
             - /root/tmkms/tmkms.toml
             - -v
           image: tmkms_i:v0.12.2
+          imagePullPolicy: Never
           name: kms-alice
           resources: {}
           volumeMounts:
