@@ -49,6 +49,4 @@ spec:
         - name: node-carol-claim0
           hostPath:
             path: ../node-carol
-          persistentVolumeClaim:
-            claimName: node-carol-claim0
 status: {}
