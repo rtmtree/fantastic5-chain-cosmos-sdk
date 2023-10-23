@@ -31,8 +31,8 @@ spec:
             - --config
             - /root/tmkms/tmkms.toml
             - -v
-          image: localhost:5000/tmkms_i:v0.12.2
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Never
+          image: tmkms_i:v0.12.2
           name: kms-alice
           resources: {}
           volumeMounts:
