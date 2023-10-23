@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o k8s/
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kms-alice
+  name: kms-alice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: kms-alice
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o k8s/
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/prod-sim-net-alice-kms: "true"
+        io.kompose.service: kms-alice
+    spec:
+      containers:
+        - args:
+            - start
+            - --config
+            - /root/tmkms/tmkms.toml
+            - -v
+          image: tmkms_i:v0.12.2
+          name: kms-alice
+          resources: {}
+          volumeMounts:
+            - mountPath: /root/tmkms
+              name: kms-alice-claim0
+      restartPolicy: Always
+      volumes:
+        - name: kms-alice-claim0
+          persistentVolumeClaim:
+            claimName: kms-alice-claim0
+status: {}
