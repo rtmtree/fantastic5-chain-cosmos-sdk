@@ -36,7 +36,7 @@ spec:
           name: kms-alice
           resources: {}
           volumeMounts:
-            - mountPath: /root/tmkms
+            - mountPath: ../kms-alice
               name: kms-alice-claim0
       restartPolicy: Always
       volumes:
