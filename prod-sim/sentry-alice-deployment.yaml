@@ -6,13 +6,13 @@ metadata:
     kompose.version: 1.31.2 (a92241f79)
   creationTimestamp: null
   labels:
-    io.kompose.service: sentry-bob
-  name: sentry-bob
+    io.kompose.service: sentry-alice
+  name: sentry-alice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: sentry-bob
+      io.kompose.service: sentry-alice
   strategy:
     type: Recreate
   template:
@@ -22,23 +22,22 @@ spec:
         kompose.version: 1.31.2 (a92241f79)
       creationTimestamp: null
       labels:
-        io.kompose.network/prod-sim-net-bob: "true"
+        io.kompose.network/prod-sim-net-alice: "true"
         io.kompose.network/prod-sim-net-public: "true"
-        io.kompose.service: sentry-bob
+        io.kompose.service: sentry-alice
     spec:
       containers:
         - args:
             - start
           image: fantasfived_i
-          imagePullPolicy: Never
-          name: sentry-bob
+          name: sentry-alice
           resources: {}
           volumeMounts:
             - mountPath: /root/.fantasfive
-              name: sentry-bob-claim0
+              name: sentry-alice-claim0
       restartPolicy: Always
       volumes:
-        - name: sentry-bob-claim0
+        - name: sentry-alice-claim0
           persistentVolumeClaim:
-            claimName: sentry-bob-claim0
+            claimName: sentry-alice-claim0
 status: {}

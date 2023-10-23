@@ -29,7 +29,6 @@ spec:
         - args:
             - start
           image: fantasfived_i
-          imagePullPolicy: Never
           name: val-bob
           resources: {}
           volumeMounts:
