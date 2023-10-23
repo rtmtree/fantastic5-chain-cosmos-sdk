@@ -13,6 +13,9 @@ spec:
     - name: "26657"
       port: 26657
       targetPort: 26657
+    - name: "1317"
+      port: 1317
+      targetPort: 1317
   selector:
     io.kompose.service: node-carol
 status:
