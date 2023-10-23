@@ -42,11 +42,13 @@ spec:
               protocol: TCP
           resources: {}
           volumeMounts:
-            - mountPath: ../node-carol
+            - mountPath: /root/.fantasfive
               name: node-carol-claim0
       restartPolicy: Always
       volumes:
         - name: node-carol-claim0
+          hostPath:
+            path: ../node-carol
           persistentVolumeClaim:
             claimName: node-carol-claim0
 status: {}
