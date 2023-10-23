@@ -48,5 +48,5 @@ spec:
       volumes:
         - name: node-carol-claim0
           hostPath:
-            path: ./node-carol
+            path: /home/bank23232525/fantastic5-chain-cosmos-sdk/prod-sim/node-carol
 status: {}
