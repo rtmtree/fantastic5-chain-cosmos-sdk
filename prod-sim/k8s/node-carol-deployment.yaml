@@ -28,8 +28,8 @@ spec:
       containers:
         - args:
             - start
-          image: fantasfived_i
-          imagePullPolicy: Never
+          image: localhost:5000/fantasfived_i
+          imagePullPolicy: IfNotPresent
           name: node-carol
           ports:
             - containerPort: 26657
