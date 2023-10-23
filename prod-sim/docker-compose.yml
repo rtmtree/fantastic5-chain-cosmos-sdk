@@ -66,5 +66,6 @@ services:
       - net-public
     ports:
       - 0.0.0.0:26657:26657
+      - 0.0.0.0:1317:1317
     volumes:
       - ./node-carol:/root/.fantasfive
